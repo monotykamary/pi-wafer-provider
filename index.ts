@@ -47,6 +47,7 @@ interface JsonModel {
   };
   contextWindow: number;
   maxTokens: number;
+  thinkingLevelMap?: Record<string, string | null>;
   compat?: ModelCompat;
 }
 
@@ -62,6 +63,7 @@ interface PatchEntry {
   };
   contextWindow?: number;
   maxTokens?: number;
+  thinkingLevelMap?: Record<string, string | null>;
   compat?: Record<string, unknown>;
 }
 
@@ -119,6 +121,7 @@ function transformModel(model: JsonModel): Model<Api> {
     maxTokens: model.maxTokens ?? 0,
     api: "openai-completions",
     provider: "wafer",
+    thinkingLevelMap: model.thinkingLevelMap,
     compat: model.compat,
   } as Model<Api>;
 }

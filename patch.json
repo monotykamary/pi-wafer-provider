@@ -19,6 +19,13 @@
     "reasoning": true,
     "contextWindow": 1000000,
     "maxTokens": 384000,
+    "thinkingLevelMap": {
+      "minimal": null,
+      "low": null,
+      "medium": null,
+      "high": "high",
+      "xhigh": "max"
+    },
     "compat": {
       "thinkingFormat": "deepseek",
       "maxTokensField": "max_completion_tokens",
