@@ -59,6 +59,7 @@ pi
 |-------|------|---------|------------|------------|-------------|--------------|
 | DeepSeek V4 Pro | Text | 1M | 384K | $1.74 | $3.48 | $0.01 |
 | GLM 5.1 | Text | 203K | 33K | $1.50 | $4.50 | $0.15 |
+| MiniMax M2.7 | Text | 205K | 16K | Free | Free | Free |
 | Qwen 3.5 397B (A17B) | Text + Image | 262K | 33K | $0.60 | $3.60 | $0.06 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
