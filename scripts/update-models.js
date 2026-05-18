@@ -237,13 +237,8 @@ async function main() {
       transformApiModel(m, existingModelsMap)
     );
 
-    // Keep models from models.json that are NOT in the API response
-    const apiIds = new Set(apiModels.map(m => m.id));
-    for (const existing of Object.values(existingModelsMap)) {
-      if (!apiIds.has(existing.id)) {
-        models.push(existing);
-      }
-    }
+    // Live API is authoritative — models absent from API are removed
+    // (embedded data is already used for enrichment in transformApiModel)
 
     // Sort by model name
     models.sort((a, b) => a.name.localeCompare(b.name));

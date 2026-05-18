@@ -1,25 +1,5 @@
 [
   {
-    "id": "DeepSeek-V4-Pro",
-    "name": "DeepSeek V4 Pro",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 1.74,
-      "output": 3.48,
-      "cacheRead": 0.0145,
-      "cacheWrite": 0
-    },
-    "contextWindow": 1048576,
-    "maxTokens": 32768,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false
-    }
-  },
-  {
     "id": "GLM-5.1",
     "name": "GLM 5.1",
     "reasoning": false,
@@ -37,27 +17,6 @@
     "compat": {
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false
-    }
-  },
-  {
-    "id": "MiniMax-M2.7",
-    "name": "MiniMax M2.7",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 204800,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
     }
   },
   {
