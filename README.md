@@ -17,7 +17,7 @@ A [pi](https://github.com/badlogic/pi-mono) extension that registers [Wafer Pass
 Install directly from GitHub:
 
 ```bash
-pi install git:github.com/monotykamary/pi-wafer-provider
+pi install https://github.com/monotykamary/pi-wafer-provider
 ```
 
 Then set your API key and run pi:
