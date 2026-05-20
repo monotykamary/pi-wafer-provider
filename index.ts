@@ -169,7 +169,7 @@ function transformApiModel(apiModel: any): JsonModel | null {
 async function fetchLiveModels(apiKey: string, signal?: AbortSignal): Promise<JsonModel[] | null> {
   try {
     const response = await fetch(MODELS_URL, {
-      headers: { Authorization: `Bearer ${apiKey}` },
+      headers: { Authorization: `Bearer ${apiKey}`, "Wafer-ZDR": "required" },
       signal: signal ? AbortSignal.any([AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS), signal]) : AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS),
     });
     if (!response.ok) return null;
@@ -256,6 +256,7 @@ export default function (pi: ExtensionAPI) {
     baseUrl: BASE_URL,
     apiKey: "WAFER_API_KEY",
     api: "openai-completions",
+    headers: { "Wafer-ZDR": "required" },
     models: staleModels,
   });
 
@@ -270,6 +271,7 @@ export default function (pi: ExtensionAPI) {
           baseUrl: BASE_URL,
           apiKey: "WAFER_API_KEY",
           api: "openai-completions",
+          headers: { "Wafer-ZDR": "required" },
           models: buildModels(freshBase, customModels, patches),
         });
       }
