@@ -4,7 +4,8 @@
     "compat": {
       "thinkingFormat": "qwen",
       "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
     }
   },
   "GLM-5.1": {
@@ -12,7 +13,8 @@
     "compat": {
       "thinkingFormat": "zai",
       "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
     }
   },
   "DeepSeek-V4-Pro": {
@@ -29,7 +31,8 @@
     "compat": {
       "thinkingFormat": "deepseek",
       "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
     }
   }
 }
