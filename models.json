@@ -60,26 +60,5 @@
       "supportsDeveloperRole": false,
       "supportsStore": false
     }
-  },
-  {
-    "id": "qwen3.6-max-preview",
-    "name": "Qwen3.6 Max Preview",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
   }
 ]
