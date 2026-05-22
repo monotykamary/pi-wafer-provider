@@ -17,6 +17,15 @@
       "supportsReasoningEffort": true
     }
   },
+  "Kimi-K2.6": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
+    }
+  },
   "DeepSeek-V4-Pro": {
     "reasoning": true,
     "contextWindow": 1000000,
