@@ -58,6 +58,7 @@ pi
 | Model | Type | Context | Max Output | Input Cost | Output Cost | Cached Input |
 |-------|------|---------|------------|------------|-------------|--------------|
 | GLM 5.1 | Text | 203K | 33K | $1.50 | $4.50 | $0.15 |
+| Kimi K2.6 | Text | 262K | 33K | $1.10 | $4.80 | $0.11 |
 | Qwen 3.5 397B (A17B) | Text + Image | 262K | 33K | $0.60 | $3.60 | $0.06 |
 | Qwen3.6 35B A3B | Text | 33K | 16K | Free | Free | Free |
 
