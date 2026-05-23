@@ -20,7 +20,6 @@
   "Kimi-K2.6": {
     "reasoning": true,
     "compat": {
-      "thinkingFormat": "qwen",
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false,
       "supportsReasoningEffort": true
