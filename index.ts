@@ -191,7 +191,10 @@ function transformApiModel(apiModel: any): JsonModel | null {
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: apiModel.max_model_len || 0,
     maxTokens: 0,
-    compat: { supportsZdr: apiModel.zdr_supported ?? undefined },
+    compat: {
+      supportsZdr: apiModel.zdr_supported ?? undefined,
+      supportsReasoningEffort: true,
+    },
   };
 }
 

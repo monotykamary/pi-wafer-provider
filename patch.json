@@ -25,6 +25,24 @@
       "supportsReasoningEffort": true
     }
   },
+  "Qwen3.6-35B-A3B": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
+    }
+  },
+  "deepseek-v4-flash": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "deepseek",
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsReasoningEffort": true
+    }
+  },
   "deepseek-v4-pro": {
     "reasoning": true,
     "contextWindow": 1000000,
