@@ -25,7 +25,7 @@
       "supportsReasoningEffort": true
     }
   },
-  "DeepSeek-V4-Pro": {
+  "deepseek-v4-pro": {
     "reasoning": true,
     "contextWindow": 1000000,
     "maxTokens": 384000,

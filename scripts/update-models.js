@@ -75,9 +75,13 @@ function transformApiModel(apiModel, existingModelsMap) {
   // Preserve existing curated data (pricing, reasoning, compat, etc.)
   if (existingModelsMap[id]) {
     const existing = { ...existingModelsMap[id] };
-    // Update context window from API if changed
+    // Update API-derived fields if changed
     if (apiModel.max_model_len) {
       existing.contextWindow = apiModel.max_model_len;
+    }
+    if (apiModel.zdr_supported !== undefined) {
+      existing.compat = existing.compat || {};
+      existing.compat.supportsZdr = apiModel.zdr_supported;
     }
     return existing;
   }
@@ -100,6 +104,7 @@ function transformApiModel(apiModel, existingModelsMap) {
       maxTokensField: 'max_completion_tokens',
       supportsDeveloperRole: false,
       supportsStore: false,
+      supportsZdr: apiModel.zdr_supported,
     },
   };
 

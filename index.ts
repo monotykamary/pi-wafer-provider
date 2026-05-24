@@ -62,12 +62,14 @@ interface JsonModel {
   contextWindow: number;
   maxTokens: number;
   thinkingLevelMap?: Record<string, string | null>;
+  headers?: Record<string, string>;
   compat?: {
     supportsDeveloperRole?: boolean;
     supportsStore?: boolean;
     maxTokensField?: "max_completion_tokens" | "max_tokens";
     thinkingFormat?: "openai" | "zai" | "qwen" | "qwen-chat-template";
     supportsReasoningEffort?: boolean;
+    supportsZdr?: boolean;
   };
 }
 
@@ -155,6 +157,18 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
   return Array.from(modelMap.values());
 }
 
+/** Apply per-model ZDR header unless the model explicitly opts out. */
+function applyZdrHeaders(models: JsonModel[]): JsonModel[] {
+  return models.map((model) => {
+    // default: ZDR supported; omit header only if compat.supportsZdr === false
+    if (model.compat?.supportsZdr === false) return model;
+    return {
+      ...model,
+      headers: { ...(model.headers || {}), "Wafer-ZDR": "required" },
+    };
+  });
+}
+
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
 const BASE_URL = "https://pass.wafer.ai/v1";
@@ -167,7 +181,7 @@ interface ProviderConfig {
   apiKeyEnv: string;
 }
 
-/** Transform a model from the Wafer /v1/models API. Returns minimal data (id, max_model_len). */
+/** Transform a model from the Wafer /v1/models API. */
 function transformApiModel(apiModel: any): JsonModel | null {
   return {
     id: apiModel.id,
@@ -177,6 +191,7 @@ function transformApiModel(apiModel: any): JsonModel | null {
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: apiModel.max_model_len || 0,
     maxTokens: 0,
+    compat: { supportsZdr: apiModel.zdr_supported ?? undefined },
   };
 }
 
@@ -187,7 +202,7 @@ function getCachePath(providerId: string): string {
 async function fetchLiveModels(apiKey: string, signal?: AbortSignal): Promise<JsonModel[] | null> {
   try {
     const response = await fetch(MODELS_URL, {
-      headers: { Authorization: `Bearer ${apiKey}`, "Wafer-ZDR": "required" },
+      headers: { Authorization: `Bearer ${apiKey}` },
       signal: signal ? AbortSignal.any([AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS), signal]) : AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS),
     });
     if (!response.ok) return null;
@@ -299,8 +314,7 @@ function registerWaferProvider(
     baseUrl: BASE_URL,
     apiKey: apiKeyEnv,
     api: "openai-completions",
-    headers: { "Wafer-ZDR": "required" },
-    models: staleModels,
+    models: applyZdrHeaders(staleModels),
   });
 
   pi.on("session_start", async (_event, ctx) => {
@@ -314,8 +328,7 @@ function registerWaferProvider(
             baseUrl: BASE_URL,
             apiKey: apiKeyEnv,
             api: "openai-completions",
-            headers: { "Wafer-ZDR": "required" },
-            models: buildModels(freshBase, customModels, patches),
+            models: applyZdrHeaders(buildModels(freshBase, customModels, patches)),
           });
         }
       });
