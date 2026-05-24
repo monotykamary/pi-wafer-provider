@@ -1,8 +1,9 @@
 /**
  * Wafer Provider Extension
  *
- * Registers Wafer Pass (pass.wafer.ai) as a custom provider using the
- * OpenAI completions API.
+ * Registers Wafer Pass and Wafer Serverless as custom providers using the
+ * OpenAI completions API. Both offerings share the same base URL — the API
+ * key determines which models are available.
  *
  * Model resolution strategy: Stale-While-Revalidate
  *   1. Serve stale immediately: disk cache → embedded models.json (zero-latency)
@@ -11,13 +12,23 @@
  *
  * Merge order: [live|cache|embedded] → apply patch.json → merge custom-models.json
  *
+ * Providers:
+ *   - wafer-pass        (WAFER_API_KEY or WAFER_PASS_API_KEY)
+ *   - wafer-serverless  (WAFER_SERVERLESS_API_KEY)
+ *
  * Usage:
  *   # Option 1: Store in auth.json (recommended)
  *   # Add to ~/.pi/agent/auth.json:
- *   #   "wafer": { "type": "api_key", "key": "your-api-key" }
+ *   #   "wafer-pass":        { "type": "api_key", "key": "your-wafer-pass-key" }
+ *   #   "wafer-serverless":  { "type": "api_key", "key": "your-wafer-serverless-key" }
  *
- *   # Option 2: Set as environment variable
- *   export WAFER_API_KEY=your-api-key
+ *   # To reference an env var from auth.json:
+ *   #   "wafer-pass": { "type": "api_key", "key": "WAFER_PASS_API_KEY" }
+ *
+ *   # Option 2: Set as environment variables
+ *   export WAFER_API_KEY=your-wafer-pass-key
+ *   #      WAFER_PASS_API_KEY also works via auth.json (see above)
+ *   export WAFER_SERVERLESS_API_KEY=your-wafer-serverless-key
  *
  *   # Run pi with the extension
  *   pi -e /path/to/pi-wafer-provider
@@ -146,12 +157,15 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
 
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
-const PROVIDER_ID = "wafer";
 const BASE_URL = "https://pass.wafer.ai/v1";
 const MODELS_URL = `${BASE_URL}/models`;
 const CACHE_DIR = path.join(os.homedir(), ".pi", "agent", "cache");
-const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
 const LIVE_FETCH_TIMEOUT_MS = 8000;
+
+interface ProviderConfig {
+  providerId: string;
+  apiKeyEnv: string;
+}
 
 /** Transform a model from the Wafer /v1/models API. Returns minimal data (id, max_model_len). */
 function transformApiModel(apiModel: any): JsonModel | null {
@@ -164,6 +178,10 @@ function transformApiModel(apiModel: any): JsonModel | null {
     contextWindow: apiModel.max_model_len || 0,
     maxTokens: 0,
   };
+}
+
+function getCachePath(providerId: string): string {
+  return path.join(CACHE_DIR, `${providerId}-models.json`);
 }
 
 async function fetchLiveModels(apiKey: string, signal?: AbortSignal): Promise<JsonModel[] | null> {
@@ -182,19 +200,19 @@ async function fetchLiveModels(apiKey: string, signal?: AbortSignal): Promise<Js
   }
 }
 
-function loadCachedModels(): JsonModel[] | null {
+function loadCachedModels(providerId: string): JsonModel[] | null {
   try {
-    const data = JSON.parse(fs.readFileSync(CACHE_PATH, "utf8"));
+    const data = JSON.parse(fs.readFileSync(getCachePath(providerId), "utf8"));
     return Array.isArray(data) ? data : null;
   } catch {
     return null;
   }
 }
 
-function cacheModels(models: JsonModel[]): void {
+function cacheModels(providerId: string, models: JsonModel[]): void {
   try {
     fs.mkdirSync(CACHE_DIR, { recursive: true });
-    fs.writeFileSync(CACHE_PATH, JSON.stringify(models, null, 2) + "\n");
+    fs.writeFileSync(getCachePath(providerId), JSON.stringify(models, null, 2) + "\n");
   } catch {
     // Cache write failure is non-fatal
   }
@@ -226,8 +244,8 @@ function mergeWithEmbedded(liveModels: JsonModel[], embeddedModels: JsonModel[])
   return result;
 }
 
-function loadStaleModels(embeddedModels: JsonModel[]): JsonModel[] {
-  const cached = loadCachedModels();
+function loadStaleModels(providerId: string, embeddedModels: JsonModel[]): JsonModel[] {
+  const cached = loadCachedModels(providerId);
   if (!cached || cached.length === 0) return embeddedModels;
 
   // Merge embedded models that are missing from cache (newly added models)
@@ -240,52 +258,61 @@ function loadStaleModels(embeddedModels: JsonModel[]): JsonModel[] {
   return cached;
 }
 
-async function revalidateModels(apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
+async function revalidateModels(providerId: string, apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
   if (!apiKey) return null;
   const liveModels = await fetchLiveModels(apiKey, signal);
   if (!liveModels || liveModels.length === 0) return null;
   const merged = mergeWithEmbedded(liveModels, embeddedModels);
-  cacheModels(merged);
+  cacheModels(providerId, merged);
   return merged;
 }
 
-// ─── API Key Resolution (via ModelRegistry) ────────────────────────────────────
+// ─── Per-Provider State ───────────────────────────────────────────────────────
 
-let cachedApiKey: string | undefined;
-let revalidateAbort: AbortController | null = null;
-
-async function resolveApiKey(modelRegistry: ModelRegistry): Promise<void> {
-  cachedApiKey = await modelRegistry.getApiKeyForProvider("wafer") ?? undefined;
+interface ProviderState {
+  cachedApiKey: string | undefined;
+  revalidateAbort: AbortController | null;
 }
 
-// ─── Extension Entry Point ────────────────────────────────────────────────────
+function createProviderState(): ProviderState {
+  return { cachedApiKey: undefined, revalidateAbort: null };
+}
 
-export default function (pi: ExtensionAPI) {
-  const embeddedModels = modelsData as JsonModel[];
-  const customModels = customModelsData as JsonModel[];
-  const patches = patchData as PatchData;
+async function resolveApiKey(state: ProviderState, providerId: string, modelRegistry: ModelRegistry): Promise<void> {
+  state.cachedApiKey = await modelRegistry.getApiKeyForProvider(providerId) ?? undefined;
+}
 
-  const staleBase = loadStaleModels(embeddedModels);
+function registerWaferProvider(
+  pi: ExtensionAPI,
+  config: ProviderConfig,
+  embeddedModels: JsonModel[],
+  customModels: JsonModel[],
+  patches: PatchData,
+): void {
+  const { providerId, apiKeyEnv } = config;
+  const state = createProviderState();
+
+  const staleBase = loadStaleModels(providerId, embeddedModels);
   const staleModels = buildModels(staleBase, customModels, patches);
 
-  pi.registerProvider("wafer", {
+  pi.registerProvider(providerId, {
     baseUrl: BASE_URL,
-    apiKey: "WAFER_API_KEY",
+    apiKey: apiKeyEnv,
     api: "openai-completions",
     headers: { "Wafer-ZDR": "required" },
     models: staleModels,
   });
 
   pi.on("session_start", async (_event, ctx) => {
-    revalidateAbort?.abort();
-    revalidateAbort = new AbortController();
-    const signal = revalidateAbort.signal;
-    resolveApiKey(ctx.modelRegistry).then(() => {
-      revalidateModels(cachedApiKey, embeddedModels, signal).then((freshBase) => {
+    state.revalidateAbort?.abort();
+    state.revalidateAbort = new AbortController();
+    const signal = state.revalidateAbort.signal;
+    resolveApiKey(state, providerId, ctx.modelRegistry).then(() => {
+      revalidateModels(providerId, state.cachedApiKey, embeddedModels, signal).then((freshBase) => {
         if (freshBase && !signal.aborted) {
-          pi.registerProvider("wafer", {
+          pi.registerProvider(providerId, {
             baseUrl: BASE_URL,
-            apiKey: "WAFER_API_KEY",
+            apiKey: apiKeyEnv,
             api: "openai-completions",
             headers: { "Wafer-ZDR": "required" },
             models: buildModels(freshBase, customModels, patches),
@@ -296,6 +323,25 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.on("session_shutdown", () => {
-    revalidateAbort?.abort();
+    state.revalidateAbort?.abort();
   });
+}
+
+// ─── Provider Definitions ────────────────────────────────────────────────────
+
+const PROVIDERS: ProviderConfig[] = [
+  { providerId: "wafer-pass", apiKeyEnv: "WAFER_API_KEY" },
+  { providerId: "wafer-serverless", apiKeyEnv: "WAFER_SERVERLESS_API_KEY" },
+];
+
+// ─── Extension Entry Point ────────────────────────────────────────────────────
+
+export default function (pi: ExtensionAPI) {
+  const embeddedModels = modelsData as JsonModel[];
+  const customModels = customModelsData as JsonModel[];
+  const patches = patchData as PatchData;
+
+  for (const config of PROVIDERS) {
+    registerWaferProvider(pi, config, embeddedModels, customModels, patches);
+  }
 }
