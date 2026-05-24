@@ -280,17 +280,18 @@ export default function (pi: ExtensionAPI) {
     revalidateAbort?.abort();
     revalidateAbort = new AbortController();
     const signal = revalidateAbort.signal;
-    await resolveApiKey(ctx.modelRegistry);
-    revalidateModels(cachedApiKey, embeddedModels, signal).then((freshBase) => {
-      if (freshBase && !signal.aborted) {
-        pi.registerProvider("wafer", {
-          baseUrl: BASE_URL,
-          apiKey: "WAFER_API_KEY",
-          api: "openai-completions",
-          headers: { "Wafer-ZDR": "required" },
-          models: buildModels(freshBase, customModels, patches),
-        });
-      }
+    resolveApiKey(ctx.modelRegistry).then(() => {
+      revalidateModels(cachedApiKey, embeddedModels, signal).then((freshBase) => {
+        if (freshBase && !signal.aborted) {
+          pi.registerProvider("wafer", {
+            baseUrl: BASE_URL,
+            apiKey: "WAFER_API_KEY",
+            api: "openai-completions",
+            headers: { "Wafer-ZDR": "required" },
+            models: buildModels(freshBase, customModels, patches),
+          });
+        }
+      });
     });
   });
 
