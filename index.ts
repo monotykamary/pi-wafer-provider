@@ -62,6 +62,7 @@ interface JsonModel {
   contextWindow: number;
   maxTokens: number;
   thinkingLevelMap?: Record<string, string | null>;
+  providers?: string[];
   headers?: Record<string, string>;
   compat?: {
     supportsDeveloperRole?: boolean;
@@ -86,6 +87,7 @@ interface PatchEntry {
   contextWindow?: number;
   maxTokens?: number;
   thinkingLevelMap?: Record<string, string | null>;
+  providers?: string[];
   compat?: Record<string, unknown>;
 }
 
@@ -101,7 +103,7 @@ function applyPatch(model: JsonModel, patch: PatchEntry): JsonModel {
   if (patch.input !== undefined) result.input = patch.input;
   if (patch.contextWindow !== undefined) result.contextWindow = patch.contextWindow;
   if (patch.maxTokens !== undefined) result.maxTokens = patch.maxTokens;
-  if (patch.thinkingLevelMap !== undefined) result.thinkingLevelMap = patch.thinkingLevelMap;
+  if (patch.providers !== undefined) result.providers = patch.providers;
 
   if (patch.cost) {
     result.cost = {
@@ -155,6 +157,13 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
   }
 
   return Array.from(modelMap.values());
+}
+
+/** Filter models to only those belonging to the given provider, then strip the `providers` field. */
+function filterModelsForProvider(models: JsonModel[], providerId: string): JsonModel[] {
+  return models
+    .filter((m) => !m.providers || m.providers.includes(providerId))
+    .map(({ providers, ...rest }) => rest);
 }
 
 /** Apply per-model ZDR header unless the model explicitly opts out. */
@@ -311,7 +320,10 @@ function registerWaferProvider(
   const state = createProviderState();
 
   const staleBase = loadStaleModels(providerId, embeddedModels);
-  const staleModels = buildModels(staleBase, customModels, patches);
+  const staleModels = filterModelsForProvider(
+    buildModels(staleBase, customModels, patches),
+    providerId,
+  );
 
   pi.registerProvider(providerId, {
     baseUrl: BASE_URL,
@@ -331,7 +343,9 @@ function registerWaferProvider(
             baseUrl: BASE_URL,
             apiKey: apiKeyEnv,
             api: "openai-completions",
-            models: applyZdrHeaders(buildModels(freshBase, customModels, patches)),
+            models: applyZdrHeaders(
+              filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId),
+            ),
           });
         }
       });

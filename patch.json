@@ -1,5 +1,6 @@
 {
   "Qwen3.5-397B-A17B": {
+    "providers": ["wafer-pass"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "qwen",
@@ -9,6 +10,7 @@
     }
   },
   "GLM-5.1": {
+    "providers": ["wafer-pass"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "zai",
@@ -18,6 +20,7 @@
     }
   },
   "Kimi-K2.6": {
+    "providers": ["wafer-serverless"],
     "reasoning": true,
     "compat": {
       "maxTokensField": "max_completion_tokens",
@@ -26,6 +29,7 @@
     }
   },
   "Qwen3.6-35B-A3B": {
+    "providers": ["wafer-serverless"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "qwen",
@@ -35,6 +39,7 @@
     }
   },
   "deepseek-v4-flash": {
+    "providers": ["wafer-serverless"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "deepseek",
@@ -44,6 +49,7 @@
     }
   },
   "deepseek-v4-pro": {
+    "providers": ["wafer-serverless"],
     "reasoning": true,
     "contextWindow": 1000000,
     "maxTokens": 384000,
