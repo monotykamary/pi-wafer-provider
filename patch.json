@@ -1,6 +1,6 @@
 {
   "Qwen3.5-397B-A17B": {
-    "providers": ["wafer-pass"],
+    "providers": ["wafer-pass", "wafer-serverless"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "qwen",
@@ -10,7 +10,7 @@
     }
   },
   "GLM-5.1": {
-    "providers": ["wafer-pass"],
+    "providers": ["wafer-pass", "wafer-serverless"],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "zai",
