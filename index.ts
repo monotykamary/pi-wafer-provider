@@ -12,7 +12,7 @@
  * Merge order: [live|cache|embedded] → apply patch.json → merge custom-models.json
  *
  * Provider:
- *   - wafer-serverless  (WAFER_SERVERLESS_API_KEY)
+ *   - wafer-serverless  (WAFER_SERVERLESS_API_KEY, falls back to WAFER_API_KEY)
  *
  * Usage:
  *   # Option 1: Store in auth.json (recommended)
@@ -21,6 +21,7 @@
  *
  *   # Option 2: Set as environment variables
  *   export WAFER_SERVERLESS_API_KEY=your-wafer-serverless-key
+ *   # Falls back to WAFER_API_KEY for backwards compatibility
  *
  *   # Run pi with the extension
  *   pi -e /path/to/pi-wafer-provider
@@ -297,8 +298,18 @@ function createProviderState(): ProviderState {
   return { cachedApiKey: undefined, revalidateAbort: null };
 }
 
+/** Resolve API key from pi auth registry, falling back to env vars. */
 async function resolveApiKey(state: ProviderState, providerId: string, modelRegistry: ModelRegistry): Promise<void> {
-  state.cachedApiKey = await modelRegistry.getApiKeyForProvider(providerId) ?? undefined;
+  state.cachedApiKey =
+    (await modelRegistry.getApiKeyForProvider(providerId))
+    ?? process.env.WAFER_SERVERLESS_API_KEY
+    ?? process.env.WAFER_API_KEY
+    ?? undefined;
+}
+
+/** Resolve env var with fallback: primary key first, then legacy WAFER_API_KEY. */
+function resolveEnvKey(primaryEnv: string, fallbackEnv: string): string {
+  return process.env[primaryEnv] || process.env[fallbackEnv] || primaryEnv;
 }
 
 function registerWaferProvider(
@@ -319,7 +330,7 @@ function registerWaferProvider(
 
   pi.registerProvider(providerId, {
     baseUrl: BASE_URL,
-    apiKey: apiKeyEnv,
+    apiKey: resolveEnvKey(apiKeyEnv, "WAFER_API_KEY"),
     api: "openai-completions",
     models: applyZdrHeaders(staleModels),
   });
@@ -333,7 +344,7 @@ function registerWaferProvider(
         if (freshBase && !signal.aborted) {
           pi.registerProvider(providerId, {
             baseUrl: BASE_URL,
-            apiKey: apiKeyEnv,
+            apiKey: resolveEnvKey(apiKeyEnv, "WAFER_API_KEY"),
             api: "openai-completions",
             models: applyZdrHeaders(
               filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId),

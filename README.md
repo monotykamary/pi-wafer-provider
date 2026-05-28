@@ -97,13 +97,14 @@ API keys can be configured in multiple ways (resolved in this order):
    ```
    The `key` field supports literal values, env var names, and shell commands (prefix with `!`). See [pi's auth file docs](https://github.com/badlogic/pi-mono) for details.
 2. **Runtime override** — Use the `--api-key` CLI flag
-3. **Environment variable** — Set `WAFER_SERVERLESS_API_KEY`
+3. **Environment variable** — Set `WAFER_SERVERLESS_API_KEY` (falls back to `WAFER_API_KEY` for backwards compatibility)
 
 ## Environment Variables
 
 | Variable | Provider | Description |
 |----------|----------|-------------|
-| `WAFER_SERVERLESS_API_KEY` | `wafer-serverless` | Serverless API key |
+| `WAFER_SERVERLESS_API_KEY` | `wafer-serverless` | Primary API key |
+| `WAFER_API_KEY` | `wafer-serverless` | Legacy fallback (used if `WAFER_SERVERLESS_API_KEY` is unset) |
 
 ## Configuration
 
