@@ -14,7 +14,7 @@
  *
  * patch.json is applied at runtime by the provider — not baked into models.json.
  *
- * Requires WAFER_SERVERLESS_API_KEY environment variable.
+ * Requires WAFER_SERVERLESS_API_KEY (or WAFER_API_KEY) environment variable.
  */
 
 import fs from 'fs';
@@ -47,9 +47,9 @@ function saveJson(filePath, data) {
 // ─── API fetch ───────────────────────────────────────────────────────────────
 
 async function fetchModels() {
-  const apiKey = process.env.WAFER_SERVERLESS_API_KEY;
+  const apiKey = process.env.WAFER_SERVERLESS_API_KEY || process.env.WAFER_API_KEY;
   if (!apiKey) {
-    throw new Error('WAFER_SERVERLESS_API_KEY environment variable is required');
+    throw new Error('WAFER_SERVERLESS_API_KEY (or WAFER_API_KEY) environment variable is required');
   }
 
   console.log(`Fetching models from ${MODELS_API_URL}...`);

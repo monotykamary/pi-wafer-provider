@@ -181,6 +181,7 @@ const LIVE_FETCH_TIMEOUT_MS = 8000;
 interface ProviderConfig {
   providerId: string;
   apiKeyEnv: string;
+  fallbackApiKeyEnv?: string;
 }
 
 /** Transform a model from the Wafer /v1/models API. */
@@ -299,17 +300,17 @@ function createProviderState(): ProviderState {
 }
 
 /** Resolve API key from pi auth registry, falling back to env vars. */
-async function resolveApiKey(state: ProviderState, providerId: string, modelRegistry: ModelRegistry): Promise<void> {
+async function resolveApiKey(state: ProviderState, providerId: string, modelRegistry: ModelRegistry, config: ProviderConfig): Promise<void> {
   state.cachedApiKey =
     (await modelRegistry.getApiKeyForProvider(providerId))
-    ?? process.env.WAFER_SERVERLESS_API_KEY
-    ?? process.env.WAFER_API_KEY
+    ?? resolveEnvKey(config)
     ?? undefined;
 }
 
-/** Resolve env var with fallback: primary key first, then legacy WAFER_API_KEY. */
-function resolveEnvKey(primaryEnv: string, fallbackEnv: string): string {
-  return process.env[primaryEnv] || process.env[fallbackEnv] || primaryEnv;
+/** Resolve env var with fallback: primary key first, then legacy fallback. */
+function resolveEnvKey(config: ProviderConfig): string | undefined {
+  const { apiKeyEnv, fallbackApiKeyEnv } = config;
+  return process.env[apiKeyEnv] || (fallbackApiKeyEnv ? process.env[fallbackApiKeyEnv] : undefined) || apiKeyEnv;
 }
 
 function registerWaferProvider(
@@ -319,7 +320,7 @@ function registerWaferProvider(
   customModels: JsonModel[],
   patches: PatchData,
 ): void {
-  const { providerId, apiKeyEnv } = config;
+  const { providerId } = config;
   const state = createProviderState();
 
   const staleBase = loadStaleModels(providerId, embeddedModels);
@@ -330,7 +331,7 @@ function registerWaferProvider(
 
   pi.registerProvider(providerId, {
     baseUrl: BASE_URL,
-    apiKey: resolveEnvKey(apiKeyEnv, "WAFER_API_KEY"),
+    apiKey: resolveEnvKey(config),
     api: "openai-completions",
     models: applyZdrHeaders(staleModels),
   });
@@ -339,12 +340,12 @@ function registerWaferProvider(
     state.revalidateAbort?.abort();
     state.revalidateAbort = new AbortController();
     const signal = state.revalidateAbort.signal;
-    resolveApiKey(state, providerId, ctx.modelRegistry).then(() => {
+    resolveApiKey(state, providerId, ctx.modelRegistry, config).then(() => {
       revalidateModels(providerId, state.cachedApiKey, embeddedModels, signal).then((freshBase) => {
         if (freshBase && !signal.aborted) {
           pi.registerProvider(providerId, {
             baseUrl: BASE_URL,
-            apiKey: resolveEnvKey(apiKeyEnv, "WAFER_API_KEY"),
+            apiKey: resolveEnvKey(config),
             api: "openai-completions",
             models: applyZdrHeaders(
               filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId),
@@ -365,6 +366,7 @@ function registerWaferProvider(
 const PROVIDER: ProviderConfig = {
   providerId: "wafer-serverless",
   apiKeyEnv: "WAFER_SERVERLESS_API_KEY",
+  fallbackApiKeyEnv: "WAFER_API_KEY",
 };
 
 // ─── Extension Entry Point ────────────────────────────────────────────────────
