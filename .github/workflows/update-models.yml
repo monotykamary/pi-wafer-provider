@@ -24,7 +24,7 @@ jobs:
 
       - name: Fetch and update models
         env:
-          WAFER_API_KEY: ${{ secrets.WAFER_API_KEY }}
+          WAFER_SERVERLESS_API_KEY: ${{ secrets.WAFER_SERVERLESS_API_KEY }}
         run: node scripts/update-models.js
 
       - name: Check for changes
@@ -47,7 +47,7 @@ jobs:
             Automated update of Wafer models from https://pass.wafer.ai/v1/models
 
             Changes include:
-            - Updated models in `models.json` from Wafer Pass API
+            - Updated models in `models.json` from Wafer Serverless API
             - Updated model table in `README.md`
             - Patch overrides in `patch.json` are preserved
           branch: update-wafer-models

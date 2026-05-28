@@ -9,12 +9,12 @@
  * 4. Preserved Thinking via chat_template_kwargs
  */
 
-const API_KEY = process.env.WAFER_API_KEY;
+const API_KEY = process.env.WAFER_SERVERLESS_API_KEY;
 const MODEL = process.env.MODEL || "Kimi-K2.6";
 const BASE_URL = "https://pass.wafer.ai/v1/chat/completions";
 
 if (!API_KEY) {
-  console.error("❌ WAFER_API_KEY is not set.");
+  console.error("❌ WAFER_SERVERLESS_API_KEY is not set.");
   process.exit(1);
 }
 

@@ -120,13 +120,35 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 262144,
+    "contextWindow": 256000,
     "maxTokens": 16384,
     "compat": {
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false,
       "supportsStore": false,
-      "supportsZdr": true
+      "supportsZdr": false
+    }
+  },
+  {
+    "id": "qwen3.7-max",
+    "name": "Qwen3.7 Max",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 256000,
+    "maxTokens": 16384,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": false
     }
   }
 ]

@@ -1,33 +1,25 @@
 /**
  * Wafer Provider Extension
  *
- * Registers Wafer Pass and Wafer Serverless as custom providers using the
- * OpenAI completions API. Both offerings share the same base URL — the API
- * key determines which models are available.
- *
+ * Registers Wafer Serverless as a custom provider using the
+ * OpenAI completions API.
+ * 
  * Model resolution strategy: Stale-While-Revalidate
  *   1. Serve stale immediately: disk cache → embedded models.json (zero-latency)
  *   2. Revalidate in background: live API /models → merge with embedded → cache → hot-swap
  *   3. patch.json + custom-models.json applied on top of whichever source won
- *
+ *   
  * Merge order: [live|cache|embedded] → apply patch.json → merge custom-models.json
  *
- * Providers:
- *   - wafer-pass        (WAFER_API_KEY or WAFER_PASS_API_KEY)
+ * Provider:
  *   - wafer-serverless  (WAFER_SERVERLESS_API_KEY)
  *
  * Usage:
  *   # Option 1: Store in auth.json (recommended)
  *   # Add to ~/.pi/agent/auth.json:
- *   #   "wafer-pass":        { "type": "api_key", "key": "your-wafer-pass-key" }
  *   #   "wafer-serverless":  { "type": "api_key", "key": "your-wafer-serverless-key" }
  *
- *   # To reference an env var from auth.json:
- *   #   "wafer-pass": { "type": "api_key", "key": "WAFER_PASS_API_KEY" }
- *
  *   # Option 2: Set as environment variables
- *   export WAFER_API_KEY=your-wafer-pass-key
- *   #      WAFER_PASS_API_KEY also works via auth.json (see above)
  *   export WAFER_SERVERLESS_API_KEY=your-wafer-serverless-key
  *
  *   # Run pi with the extension
@@ -359,10 +351,10 @@ function registerWaferProvider(
 
 // ─── Provider Definitions ────────────────────────────────────────────────────
 
-const PROVIDERS: ProviderConfig[] = [
-  { providerId: "wafer-pass", apiKeyEnv: "WAFER_API_KEY" },
-  { providerId: "wafer-serverless", apiKeyEnv: "WAFER_SERVERLESS_API_KEY" },
-];
+const PROVIDER: ProviderConfig = {
+  providerId: "wafer-serverless",
+  apiKeyEnv: "WAFER_SERVERLESS_API_KEY",
+};
 
 // ─── Extension Entry Point ────────────────────────────────────────────────────
 
@@ -371,7 +363,5 @@ export default function (pi: ExtensionAPI) {
   const customModels = customModelsData as JsonModel[];
   const patches = patchData as PatchData;
 
-  for (const config of PROVIDERS) {
-    registerWaferProvider(pi, config, embeddedModels, customModels, patches);
-  }
+  registerWaferProvider(pi, PROVIDER, embeddedModels, customModels, patches);
 }
