@@ -303,14 +303,24 @@ function createProviderState(): ProviderState {
 async function resolveApiKey(state: ProviderState, providerId: string, modelRegistry: ModelRegistry, config: ProviderConfig): Promise<void> {
   state.cachedApiKey =
     (await modelRegistry.getApiKeyForProvider(providerId))
-    ?? resolveEnvKey(config)
+    ?? resolveEnvKeyValue(config)
     ?? undefined;
 }
 
-/** Resolve env var with fallback: primary key first, then legacy fallback. */
-function resolveEnvKey(config: ProviderConfig): string | undefined {
+/** Resolve the actual API key value from environment (for fetch calls). */
+function resolveEnvKeyValue(config: ProviderConfig): string | undefined {
   const { apiKeyEnv, fallbackApiKeyEnv } = config;
-  return process.env[apiKeyEnv] || (fallbackApiKeyEnv ? process.env[fallbackApiKeyEnv] : undefined) || apiKeyEnv;
+  return process.env[apiKeyEnv] || (fallbackApiKeyEnv ? process.env[fallbackApiKeyEnv] : undefined);
+}
+
+/** Resolve the $-prefixed env var reference for registerProvider.
+ *  Uses the primary key if set, otherwise the fallback key if set,
+ *  otherwise defaults to the primary key name (pi marks it unresolved). */
+function resolveEnvKeyRef(config: ProviderConfig): string {
+  const { apiKeyEnv, fallbackApiKeyEnv } = config;
+  if (process.env[apiKeyEnv]) return `$${apiKeyEnv}`;
+  if (fallbackApiKeyEnv && process.env[fallbackApiKeyEnv]) return `$${fallbackApiKeyEnv}`;
+  return `$${apiKeyEnv}`;
 }
 
 function registerWaferProvider(
@@ -331,7 +341,7 @@ function registerWaferProvider(
 
   pi.registerProvider(providerId, {
     baseUrl: BASE_URL,
-    apiKey: resolveEnvKey(config),
+    apiKey: resolveEnvKeyRef(config),
     api: "openai-completions",
     models: applyZdrHeaders(staleModels),
   });
@@ -345,7 +355,7 @@ function registerWaferProvider(
         if (freshBase && !signal.aborted) {
           pi.registerProvider(providerId, {
             baseUrl: BASE_URL,
-            apiKey: resolveEnvKey(config),
+            apiKey: resolveEnvKeyRef(config),
             api: "openai-completions",
             models: applyZdrHeaders(
               filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId),
