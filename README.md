@@ -1,6 +1,17 @@
-# pi-wafer-provider
+<div align="center">
 
-A [pi](https://github.com/badlogic/pi-mono) extension that registers [Wafer](https://wafer.ai) **Serverless** as a custom provider. Access Qwen3.5-397B-A17B, GLM-5.1, Kimi K2.6, DeepSeek-V4, and Qwen3.6-35B models through an OpenAI-compatible API.
+# 🧇 pi-wafer-provider
+
+**Qwen3.5, GLM-5.1, Kimi K2.6 & more via [Wafer](https://wafer.ai)**
+
+_Serverless inference with free DeepSeek V4 models for [pi](https://github.com/earendil-works/pi-coding-agent)._
+
+[![pi extension](https://img.shields.io/badge/pi-extension-blueviolet)](https://github.com/earendil-works/pi-coding-agent)
+[![license](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+
+</div>
+
+---
 
 ## Features
 
