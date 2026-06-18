@@ -65,6 +65,28 @@
     }
   },
   {
+    "id": "GLM-5.2",
+    "name": "GLM 5.2",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 202752,
+    "maxTokens": 16384,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true
+    }
+  },
+  {
     "id": "Kimi-K2.6",
     "name": "Kimi K2.6",
     "reasoning": false,

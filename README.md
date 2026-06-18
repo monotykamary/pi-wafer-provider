@@ -79,6 +79,7 @@ pi
 | Deepseek V4 Flash | Text | 1M | 16K | Free | Free | Free |
 | Deepseek V4 Pro | Text | 1M | 384K | Free | Free | Free |
 | GLM 5.1 | Text | 203K | 33K | $1.50 | $4.50 | $0.15 |
+| GLM 5.2 | Text | 203K | 16K | Free | Free | Free |
 | Kimi K2.6 | Text | 262K | 33K | $1.10 | $4.80 | $0.11 |
 | MiniMax M3 | Text | 1M | 16K | Free | Free | Free |
 | Qwen 3.5 397B (A17B) | Text + Image | 262K | 33K | $0.60 | $3.60 | $0.06 |
