@@ -77,7 +77,7 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 202752,
+    "contextWindow": 1048576,
     "maxTokens": 16384,
     "compat": {
       "maxTokensField": "max_completion_tokens",
@@ -105,6 +105,28 @@
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false,
       "supportsZdr": true
+    }
+  },
+  {
+    "id": "Kimi-K2.7-Code",
+    "name": "Kimi K2.7 Code",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 262144,
+    "maxTokens": 16384,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": false
     }
   },
   {
