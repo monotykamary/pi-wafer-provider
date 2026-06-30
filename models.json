@@ -170,7 +170,7 @@
     "compat": {
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false,
-      "supportsZdr": true
+      "supportsZdr": false
     }
   },
   {
