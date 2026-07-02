@@ -31,12 +31,11 @@
  *   - GLM-5.1 (202K context)
  */
 
-import type { ExtensionAPI, ModelRegistry } from "@earendil-works/pi-coding-agent";
+import { getAgentDir, type ExtensionAPI, type ModelRegistry } from "@earendil-works/pi-coding-agent";
 import modelsData from "./models.json" with { type: "json" };
 import customModelsData from "./custom-models.json" with { type: "json" };
 import patchData from "./patch.json" with { type: "json" };
 import fs from "fs";
-import os from "os";
 import path from "path";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -175,7 +174,7 @@ function applyZdrHeaders(models: JsonModel[]): JsonModel[] {
 
 const BASE_URL = "https://pass.wafer.ai/v1";
 const MODELS_URL = `${BASE_URL}/models`;
-const CACHE_DIR = path.join(os.homedir(), ".pi", "agent", "cache");
+const CACHE_DIR = path.join(getAgentDir(), "cache");
 const LIVE_FETCH_TIMEOUT_MS = 8000;
 
 interface ProviderConfig {
