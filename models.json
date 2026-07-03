@@ -1,49 +1,5 @@
 [
   {
-    "id": "deepseek-v4-flash",
-    "name": "Deepseek V4 Flash",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 1000000,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "supportsZdr": true
-    }
-  },
-  {
-    "id": "deepseek-v4-pro",
-    "name": "Deepseek V4 Pro",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 1000000,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "supportsZdr": true
-    }
-  },
-  {
     "id": "GLM-5.1",
     "name": "GLM 5.1",
     "reasoning": false,
