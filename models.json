@@ -43,6 +43,28 @@
     }
   },
   {
+    "id": "GLM5.2-Turbo",
+    "name": "GLM5.2 Turbo",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 16384,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true
+    }
+  },
+  {
     "id": "Kimi-K2.6",
     "name": "Kimi K2.6",
     "reasoning": false,
