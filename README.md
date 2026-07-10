@@ -78,13 +78,10 @@ pi
 |-------|------|---------|------------|------------|-------------|--------------|
 | GLM 5.1 | Text | 203K | 33K | $1.50 | $4.50 | $0.15 |
 | GLM 5.2 | Text | 1M | 16K | Free | Free | Free |
-| GLM5.2 Turbo | Text | 1M | 16K | Free | Free | Free |
+| Glm5.2 Fast | Text | 1M | 16K | Free | Free | Free |
 | Kimi K2.6 | Text | 262K | 33K | $1.10 | $4.80 | $0.11 |
-| Kimi K2.7 Code | Text | 262K | 16K | Free | Free | Free |
 | MiniMax M3 | Text | 1M | 16K | Free | Free | Free |
 | Qwen 3.5 397B (A17B) | Text + Image | 262K | 33K | $0.60 | $3.60 | $0.06 |
-| Qwen3.6 35B A3B | Text | 256K | 16K | Free | Free | Free |
-| Qwen3.7 Max | Text | 256K | 16K | $5.00 | $15.00 | $0.50 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
 
