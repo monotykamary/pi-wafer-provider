@@ -58,7 +58,7 @@
       "low": null,
       "medium": null,
       "high": "high",
-      "xhigh": "max"
+      "max": "max"
     },
     "compat": {
       "thinkingFormat": "deepseek",
