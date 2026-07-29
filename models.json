@@ -1,27 +1,5 @@
 [
   {
-    "id": "DeepSeek-V4-Pro",
-    "name": "DeepSeek V4 Pro",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 1048576,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "supportsZdr": true
-    }
-  },
-  {
     "id": "GLM-5.1",
     "name": "GLM 5.1",
     "reasoning": false,
