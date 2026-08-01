@@ -124,7 +124,10 @@ function applyPatch(model: JsonModel, patch: PatchEntry): JsonModel {
 function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): JsonModel[] {
   const modelMap = new Map<string, JsonModel>();
 
-  for (const model of base) {
+  // Seed with the base list plus grace-period deprecated models so patch.json
+  // entries apply to deprecated models exactly as while the model was live
+  // (withDeprecated keeps live data on id conflicts).
+  for (const model of withDeprecated(base)) {
     modelMap.set(model.id, model);
   }
 
@@ -383,7 +386,7 @@ function registerWaferProvider(
     baseUrl: BASE_URL,
     apiKey: resolveEnvKeyRef(config),
     api: "openai-completions",
-    models: applyZdrHeaders(withDeprecated(staleModels)),
+    models: applyZdrHeaders(staleModels),
   });
 
   pi.on("session_start", async (_event, ctx) => {
@@ -398,7 +401,7 @@ function registerWaferProvider(
             apiKey: resolveEnvKeyRef(config),
             api: "openai-completions",
             models: applyZdrHeaders(
-              withDeprecated(filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId)),
+              filterModelsForProvider(buildModels(freshBase, customModels, patches), providerId),
             ),
           });
         }
