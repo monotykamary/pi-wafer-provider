@@ -1,6 +1,8 @@
 {
   "Qwen3.5-397B-A17B": {
-    "providers": ["wafer-serverless"],
+    "providers": [
+      "wafer-serverless"
+    ],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "qwen",
@@ -10,7 +12,9 @@
     }
   },
   "GLM-5.1": {
-    "providers": ["wafer-serverless"],
+    "providers": [
+      "wafer-serverless"
+    ],
     "reasoning": true,
     "compat": {
       "thinkingFormat": "zai",
@@ -20,64 +24,11 @@
     }
   },
   "Kimi-K2.6": {
-    "providers": ["wafer-serverless"],
+    "providers": [
+      "wafer-serverless"
+    ],
     "reasoning": true,
     "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  "Qwen3.6-35B-A3B": {
-    "providers": ["wafer-serverless"],
-    "reasoning": true,
-    "compat": {
-      "thinkingFormat": "qwen",
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  "deepseek-v4-flash": {
-    "providers": ["wafer-serverless"],
-    "reasoning": true,
-    "compat": {
-      "thinkingFormat": "deepseek",
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  "deepseek-v4-pro": {
-    "providers": ["wafer-serverless"],
-    "reasoning": true,
-    "contextWindow": 1000000,
-    "maxTokens": 384000,
-    "thinkingLevelMap": {
-      "minimal": null,
-      "low": null,
-      "medium": null,
-      "high": "high",
-      "max": "max"
-    },
-    "compat": {
-      "thinkingFormat": "deepseek",
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  "qwen3.7-max": {
-    "providers": ["wafer-serverless"],
-    "reasoning": true,
-    "cost": {
-      "input": 5.0,
-      "output": 15.0,
-      "cacheRead": 0.5,
-      "cacheWrite": 0
-    },
-    "compat": {
-      "thinkingFormat": "qwen",
       "maxTokensField": "max_completion_tokens",
       "supportsDeveloperRole": false,
       "supportsReasoningEffort": true

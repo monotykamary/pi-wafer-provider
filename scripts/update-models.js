@@ -6,11 +6,9 @@
  * - models.json: Provider model definitions (enriched with pricing & compat)
  * - README.md: Model table in the Available Models section
  *
- * The Wafer /v1/models API returns basic model info (id, max_model_len)
- * but does NOT include pricing or max output tokens.
- * models.json is the source of truth for curated specs — the script preserves
- * existing data and only adds new models with sensible defaults.
- * Curate models.json manually after new model discovery.
+ * The Wafer /v1/models API returns model limits plus nested capability, pricing,
+ * modality, and ZDR metadata. models.json mirrors those API-owned fields while
+ * patch.json remains the source of truth for thinking controls and corrections.
  *
  * patch.json is applied at runtime by the provider — not baked into models.json.
  *
@@ -72,39 +70,51 @@ async function fetchModels() {
 function transformApiModel(apiModel, existingModelsMap) {
   const id = apiModel.id;
 
-  // Preserve existing curated data (pricing, reasoning, compat, etc.)
+  const details = apiModel.wafer || {};
+  const capabilities = details.capabilities || {};
+  const pricing = details.pricing || {};
+  const reasoning = capabilities.reasoning === true;
+  const input = capabilities.vision === true ? ['text', 'image'] : ['text'];
+  const cost = {
+    input: (pricing.input_cents_per_million || 0) / 100,
+    output: (pricing.output_cents_per_million || 0) / 100,
+    cacheRead: (pricing.cache_read_cents_per_million || 0) / 100,
+    cacheWrite: 0,
+  };
+
   if (existingModelsMap[id]) {
     const existing = { ...existingModelsMap[id] };
-    // Update API-derived fields if changed
-    if (apiModel.max_model_len) {
-      existing.contextWindow = apiModel.max_model_len;
-    }
-    if (apiModel.zdr_supported !== undefined) {
-      existing.compat = existing.compat || {};
-      existing.compat.supportsZdr = apiModel.zdr_supported;
-    }
+    existing.name = details.display_name || existing.name;
+    existing.reasoning = reasoning;
+    existing.input = input;
+    existing.cost = cost;
+    existing.contextWindow = details.context_length || apiModel.max_model_len || existing.contextWindow;
+    existing.compat = {
+      ...(existing.compat || {}),
+      supportsStore: false,
+      supportsDeveloperRole: false,
+      maxTokensField: 'max_completion_tokens',
+      supportsZdr: apiModel.zdr_supported,
+      ...(reasoning ? { supportsReasoningEffort: true } : {}),
+    };
     return existing;
   }
 
-  // New model — sensible defaults; curate models.json manually after discovery
+  const contextWindow = details.context_length || apiModel.max_model_len || 131072;
   const model = {
     id,
-    name: generateDisplayName(id),
-    reasoning: false,
-    input: ['text'],
-    cost: {
-      input: 0,
-      output: 0,
-      cacheRead: 0,
-      cacheWrite: 0,
-    },
-    contextWindow: apiModel.max_model_len || 131072,
-    maxTokens: 16384,
+    name: details.display_name || generateDisplayName(id),
+    reasoning,
+    input,
+    cost,
+    contextWindow,
+    maxTokens: contextWindow,
     compat: {
       maxTokensField: 'max_completion_tokens',
       supportsDeveloperRole: false,
       supportsStore: false,
       supportsZdr: apiModel.zdr_supported,
+      ...(reasoning ? { supportsReasoningEffort: true } : {}),
     },
   };
 

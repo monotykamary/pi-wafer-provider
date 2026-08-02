@@ -189,17 +189,29 @@ interface ProviderConfig {
 
 /** Transform a model from the Wafer /v1/models API. */
 function transformApiModel(apiModel: any): JsonModel | null {
+  const details = apiModel.wafer || {};
+  const capabilities = details.capabilities || {};
+  const pricing = details.pricing || {};
+  const reasoning = capabilities.reasoning === true;
   return {
     id: apiModel.id,
-    name: apiModel.id,
-    reasoning: false,
-    input: ["text"],
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-    contextWindow: apiModel.max_model_len || 0,
-    maxTokens: 0,
+    name: details.display_name || apiModel.id,
+    reasoning,
+    input: capabilities.vision === true ? ["text", "image"] : ["text"],
+    cost: {
+      input: (pricing.input_cents_per_million || 0) / 100,
+      output: (pricing.output_cents_per_million || 0) / 100,
+      cacheRead: (pricing.cache_read_cents_per_million || 0) / 100,
+      cacheWrite: 0,
+    },
+    contextWindow: details.context_length || apiModel.max_model_len || 0,
+    maxTokens: details.context_length || apiModel.max_model_len || 0,
     compat: {
+      supportsStore: false,
+      supportsDeveloperRole: false,
+      maxTokensField: "max_completion_tokens",
       supportsZdr: apiModel.zdr_supported ?? undefined,
-      supportsReasoningEffort: true,
+      ...(reasoning ? { supportsReasoningEffort: true } : {}),
     },
   };
 }

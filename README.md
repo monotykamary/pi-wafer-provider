@@ -76,14 +76,14 @@ pi
 
 | Model | Type | Context | Max Output | Input Cost | Output Cost | Cached Input |
 |-------|------|---------|------------|------------|-------------|--------------|
-| GLM 5.1 | Text | 203K | 33K | $1.50 | $4.50 | $0.15 |
-| GLM 5.2 | Text | 1M | 16K | Free | Free | Free |
-| Glm5.2 Fast | Text | 1M | 16K | Free | Free | Free |
-| Kimi K2.6 | Text | 262K | 33K | $1.10 | $4.80 | $0.11 |
-| Kimi K3 | Text | 912K | 16K | Free | Free | Free |
-| Kimi K3 Fast | Text | 1M | 16K | Free | Free | Free |
-| MiniMax M3 | Text | 1M | 16K | Free | Free | Free |
-| Qwen 3.5 397B (A17B) | Text + Image | 262K | 33K | $0.60 | $3.60 | $0.06 |
+| GLM-5.1 | Text | 203K | 33K | $1.00 | $3.20 | $0.10 |
+| GLM-5.2 | Text | 1M | 16K | $1.26 | $3.96 | $0.23 |
+| GLM5.2-Fast | Text | 1M | 16K | $2.10 | $6.60 | $0.21 |
+| Kimi-K2.6 | Text + Image | 262K | 33K | $1.14 | $4.80 | $0.19 |
+| Kimi-K3 | Text + Image | 912K | 16K | $3.00 | $15.00 | $0.30 |
+| Kimi-K3-Fast | Text + Image | 1M | 16K | $4.50 | $22.50 | $0.45 |
+| MiniMax-M3 | Text + Image | 1M | 16K | $0.33 | $1.32 | $0.07 |
+| Qwen 3.5 397B (A17B) | Text | 262K | 33K | Free | Free | Free |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
 
