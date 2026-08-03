@@ -1,4 +1,15 @@
 {
+  "kimi-k3-fast": {
+    "thinkingLevelMap": {
+      "off": null,
+      "minimal": null,
+      "low": "low",
+      "medium": null,
+      "high": "high",
+      "xhigh": null,
+      "max": "max"
+    }
+  },
   "Qwen3.5-397B-A17B": {
     "providers": [
       "wafer-serverless"

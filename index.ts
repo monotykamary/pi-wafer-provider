@@ -97,6 +97,7 @@ function applyPatch(model: JsonModel, patch: PatchEntry): JsonModel {
   if (patch.contextWindow !== undefined) result.contextWindow = patch.contextWindow;
   if (patch.maxTokens !== undefined) result.maxTokens = patch.maxTokens;
   if (patch.providers !== undefined) result.providers = patch.providers;
+  if (patch.thinkingLevelMap !== undefined) result.thinkingLevelMap = { ...patch.thinkingLevelMap };
 
   if (patch.cost) {
     result.cost = {
