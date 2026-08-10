@@ -83,7 +83,6 @@ pi
 | Kimi-K2.6 | Text + Image | 262K | 33K | $1.14 | $4.80 | $0.19 |
 | Kimi-K3 | Text + Image | 1M | 16K | $3.00 | $15.00 | $0.30 |
 | Kimi-K3-Fast | Text + Image | 1M | 16K | $4.50 | $22.50 | $0.45 |
-| MiniMax-M3 | Text + Image | 1M | 16K | $0.33 | $1.32 | $0.07 |
 | Qwen 3.5 397B (A17B) | Text | 262K | 33K | Free | Free | Free |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
