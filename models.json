@@ -23,29 +23,6 @@
     }
   },
   {
-    "id": "GLM-5.1",
-    "name": "GLM-5.1",
-    "reasoning": true,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 1,
-      "output": 3.2,
-      "cacheRead": 0.1,
-      "cacheWrite": 0
-    },
-    "contextWindow": 202752,
-    "maxTokens": 32768,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsZdr": true,
-      "supportsStore": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  {
     "id": "GLM-5.2",
     "name": "GLM-5.2",
     "reasoning": true,
@@ -56,29 +33,6 @@
       "input": 1.26,
       "output": 3.96,
       "cacheRead": 0.23,
-      "cacheWrite": 0
-    },
-    "contextWindow": 1048576,
-    "maxTokens": 16384,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "supportsZdr": true,
-      "supportsReasoningEffort": true
-    }
-  },
-  {
-    "id": "glm5.2-fast",
-    "name": "GLM5.2-Fast",
-    "reasoning": true,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 2.1,
-      "output": 6.6,
-      "cacheRead": 0.21,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,

@@ -77,9 +77,7 @@ pi
 | Model | Type | Context | Max Output | Input Cost | Output Cost | Cached Input |
 |-------|------|---------|------------|------------|-------------|--------------|
 | DeepSeek-V4-Flash-0731-Fast | Text | 1M | 1M | $0.28 | $0.56 | $0.07 |
-| GLM-5.1 | Text | 203K | 33K | $1.00 | $3.20 | $0.10 |
 | GLM-5.2 | Text | 1M | 16K | $1.26 | $3.96 | $0.23 |
-| GLM5.2-Fast | Text | 1M | 16K | $2.10 | $6.60 | $0.21 |
 | Kimi-K2.6 | Text + Image | 262K | 33K | $1.14 | $4.80 | $0.19 |
 | Kimi-K3 | Text + Image | 1M | 16K | $3.00 | $15.00 | $0.30 |
 | Kimi-K3-Fast | Text + Image | 1M | 16K | $4.50 | $22.50 | $0.45 |
