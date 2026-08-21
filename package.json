@@ -1,6 +1,6 @@
 {
   "name": "pi-wafer-provider",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "packageManager": "pnpm@11.20.0",
   "description": "Wafer Serverless provider extension for pi - Access Qwen3.5-397B-A17B, GLM-5.1, Kimi K2.6, and DeepSeek-V4 through the Wafer Serverless API",
   "type": "module",
