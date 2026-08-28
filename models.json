@@ -50,7 +50,8 @@
     "name": "GLM-5.3-Flash",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.15,
