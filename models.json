@@ -25,14 +25,14 @@
   {
     "id": "GLM-5.2",
     "name": "GLM-5.2",
-    "reasoning": true,
+    "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 1.26,
-      "output": 3.96,
-      "cacheRead": 0.23,
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
