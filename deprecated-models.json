@@ -1,1 +1,26 @@
-{}
+{
+  "GLM-5.2": {
+    "id": "GLM-5.2",
+    "name": "GLM-5.2",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 16384,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    },
+    "deprecatedAt": "2026-09-07T02:00:27.566Z"
+  }
+}
