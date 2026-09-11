@@ -1,5 +1,28 @@
 [
   {
+    "id": "DeepSeek-V4-Flash-0423",
+    "name": "DeepSeek-V4-Flash-0423",
+    "reasoning": true,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.1,
+      "output": 0.25,
+      "cacheRead": 0.05,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
     "id": "DeepSeek-V4-Flash-0731-Fast",
     "name": "DeepSeek-V4-Flash-0731-Fast",
     "reasoning": true,
@@ -10,6 +33,30 @@
       "input": 0.1,
       "output": 0.25,
       "cacheRead": 0.05,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
+    "id": "DeepSeek-V4.1-Flash",
+    "name": "DeepSeek-V4.1-Flash",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.3,
+      "output": 1.2,
+      "cacheRead": 0.01,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
