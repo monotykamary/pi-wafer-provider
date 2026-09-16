@@ -117,30 +117,6 @@
     }
   },
   {
-    "id": "Kimi-K2.6",
-    "name": "Kimi-K2.6",
-    "reasoning": true,
-    "input": [
-      "text",
-      "image"
-    ],
-    "cost": {
-      "input": 1.14,
-      "output": 4.8,
-      "cacheRead": 0.19,
-      "cacheWrite": 0
-    },
-    "contextWindow": 262144,
-    "maxTokens": 32768,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsZdr": false,
-      "supportsStore": false,
-      "supportsReasoningEffort": true
-    }
-  },
-  {
     "id": "Kimi-K3",
     "name": "Kimi-K3",
     "reasoning": true,
@@ -162,28 +138,6 @@
       "supportsStore": false,
       "supportsZdr": true,
       "supportsReasoningEffort": true
-    }
-  },
-  {
-    "id": "Qwen3.5-397B-A17B",
-    "name": "Qwen 3.5 397B (A17B)",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 262144,
-    "maxTokens": 32768,
-    "compat": {
-      "maxTokensField": "max_completion_tokens",
-      "supportsDeveloperRole": false,
-      "supportsZdr": false,
-      "supportsStore": false
     }
   }
 ]
