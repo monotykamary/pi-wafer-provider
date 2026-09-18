@@ -23,6 +23,30 @@
     }
   },
   {
+    "id": "DeepSeek-V4.1-Flash",
+    "name": "DeepSeek-V4.1-Flash",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.3,
+      "output": 1.2,
+      "cacheRead": 0.01,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
     "id": "GLM-5.3",
     "name": "GLM-5.3",
     "reasoning": true,
