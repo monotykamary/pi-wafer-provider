@@ -1,5 +1,27 @@
 [
   {
+    "id": "DeepSeek-V4-Pro",
+    "name": "DeepSeek V4 Pro",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true
+    }
+  },
+  {
     "id": "DeepSeek-V4-Flash-0731-Fast",
     "name": "DeepSeek-V4-Flash-0731-Fast",
     "reasoning": true,
@@ -31,9 +53,32 @@
       "image"
     ],
     "cost": {
-      "input": 0.3,
-      "output": 1.2,
+      "input": 0.2,
+      "output": 0.6,
       "cacheRead": 0.01,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
+    "id": "GLM-5.2",
+    "name": "GLM-5.2",
+    "reasoning": true,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 1.4,
+      "output": 4.4,
+      "cacheRead": 0.26,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
@@ -102,9 +147,9 @@
       "image"
     ],
     "cost": {
-      "input": 3,
-      "output": 12.75,
-      "cacheRead": 0.3,
+      "input": 2.5,
+      "output": 10.95,
+      "cacheRead": 0.25,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
