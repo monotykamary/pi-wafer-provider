@@ -162,5 +162,29 @@
       "supportsZdr": true,
       "supportsReasoningEffort": true
     }
+  },
+  {
+    "id": "Qwen3.8-27B",
+    "name": "Qwen3.8-27B",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.2,
+      "output": 2.5,
+      "cacheRead": 0.05,
+      "cacheWrite": 0
+    },
+    "contextWindow": 262144,
+    "maxTokens": 262144,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
   }
 ]
