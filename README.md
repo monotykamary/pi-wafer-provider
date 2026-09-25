@@ -80,7 +80,7 @@ pi
 | DeepSeek-V4-Pro | Text | 1M | 1M | $0.98 | $2.90 | $0.03 |
 | DeepSeek-V4.1-Flash | Text + Image | 1M | 1M | $0.20 | $0.60 | $0.01 |
 | GLM-5.2 | Text | 1M | 1M | $1.40 | $4.40 | $0.26 |
-| GLM-5.3 | Text | 1M | 1M | $1.19 | $4.40 | $0.26 |
+| GLM-5.3 | Text | 1M | 1M | $1.40 | $4.40 | $0.26 |
 | GLM-5.3-Flash | Text + Image | 1M | 1M | $0.10 | $0.35 | $0.02 |
 | Kimi-K3 | Text + Image | 1M | 16K | $2.10 | $10.95 | $0.21 |
 | Qwen3.8-27B | Text + Image | 262K | 262K | $0.11 | $2.50 | $0.05 |
