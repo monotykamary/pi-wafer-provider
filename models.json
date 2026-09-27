@@ -7,7 +7,7 @@
       "text"
     ],
     "cost": {
-      "input": 0.07,
+      "input": 0.06,
       "output": 0.35,
       "cacheRead": 0.06,
       "cacheWrite": 0
@@ -54,9 +54,9 @@
       "image"
     ],
     "cost": {
-      "input": 0.1,
+      "input": 0.05,
       "output": 0.6,
-      "cacheRead": 0.06,
+      "cacheRead": 0.05,
       "cacheWrite": 0
     },
     "contextWindow": 1048576,
@@ -124,7 +124,7 @@
       "image"
     ],
     "cost": {
-      "input": 0.15,
+      "input": 0.43,
       "output": 0.5,
       "cacheRead": 0.03,
       "cacheWrite": 0
@@ -148,8 +148,8 @@
       "image"
     ],
     "cost": {
-      "input": 1.99,
-      "output": 15,
+      "input": 1,
+      "output": 9,
       "cacheRead": 0.3,
       "cacheWrite": 0
     },
