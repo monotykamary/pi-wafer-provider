@@ -1,14 +1,16 @@
 {
   "name": "pi-wafer-provider",
-  "version": "1.1.32",
+  "version": "1.1.33",
   "description": "Wafer Serverless provider extension for pi - Access Qwen3.5-397B-A17B, GLM-5.1, Kimi K2.6, and DeepSeek-V4 through the Wafer Serverless API",
   "type": "module",
   "main": "index.ts",
   "scripts": {
     "clean": "echo 'nothing to clean'",
     "build": "echo 'nothing to build'",
-    "check": "echo 'nothing to check'",
-    "update-models": "node scripts/update-models.js"
+    "check": "tsc --noEmit && node scripts/test-pi-compat.mjs",
+    "update-models": "node scripts/update-models.js",
+    "test:pi": "node scripts/test-pi-compat.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "pi",
@@ -29,6 +31,11 @@
     ]
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "0.87.0"
+    "@earendil-works/pi-coding-agent": "0.99.0",
+    "typescript": "6.0.3",
+    "@types/node": "^25.9.1"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
   }
 }
