@@ -76,14 +76,14 @@ pi
 
 | Model | Type | Context | Max Output | Input Cost | Output Cost | Cached Input |
 |-------|------|---------|------------|------------|-------------|--------------|
-| DeepSeek-V4-Flash-0731-Fast | Text | 1M | 1M | $0.06 | $0.35 | $0.05 |
-| DeepSeek-V4-Pro | Text | 1M | 1M | $0.39 | $4.20 | $0.32 |
-| DeepSeek-V4.1-Flash | Text + Image | 1M | 1M | $0.04 | $0.70 | $0.04 |
-| GLM-5.2 | Text | 1M | 1M | $0.36 | $4.40 | $0.26 |
-| GLM-5.3 | Text | 1M | 1M | $0.29 | $4.40 | $0.24 |
+| DeepSeek-V4-Flash-0731-Fast | Text | 1M | 1M | $0.05 | $0.29 | $0.04 |
+| DeepSeek-V4-Pro | Text | 1M | 1M | $0.39 | $3.49 | $0.32 |
+| DeepSeek-V4.1-Flash | Text + Image | 1M | 1M | $0.10 | $0.44 | $0.05 |
+| GLM-5.2 | Text | 1M | 1M | $0.23 | $4.40 | $0.19 |
+| GLM-5.3 | Text | 1M | 1M | $0.22 | $3.39 | $0.18 |
 | GLM-5.3-Flash | Text + Image | 1M | 1M | $0.75 | $0.50 | $0.03 |
 | Kimi-K3 | Text + Image | 1M | 16K | $1.44 | $9.00 | $0.30 |
-| Qwen3.8-27B | Text + Image | 262K | 262K | $0.06 | $4.40 | $0.05 |
+| Qwen3.8-27B | Text + Image | 262K | 262K | $0.02 | $4.40 | $0.02 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
 
