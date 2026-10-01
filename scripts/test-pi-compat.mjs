@@ -14,7 +14,7 @@ globalThis.fetch = async () => new Response('', { status: 503 });
 let session;
 try {
   const { createAgentSession, DefaultResourceLoader, ModelRuntime, SessionManager, SettingsManager, VERSION } = await import('@earendil-works/pi-coding-agent');
-  assert.equal(VERSION, '0.99.0', 'run compatibility checks against the pinned host');
+  assert.equal(VERSION, '1.0.0', 'run compatibility checks against the pinned host');
   const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
   const hostPackages = ['@earendil-works/pi-ai', '@earendil-works/pi-agent-core', '@earendil-works/pi-coding-agent', '@earendil-works/pi-tui', 'typebox'];
   for (const name of hostPackages) {
@@ -65,7 +65,7 @@ try {
     modelCount += models.length;
   }
   await session.extensionRunner.emit({ type: 'session_shutdown' });
-  assert.deepEqual(errors, [], 'startup and shutdown handlers must work with Pi 0.99 contexts');
+  assert.deepEqual(errors, [], 'startup and shutdown handlers must work with Pi 1.0 contexts');
   console.log(`${manifest.name}: Pi ${VERSION} loader, manifest, session startup, and ${modelCount} models OK`);
 } finally {
   session?.dispose();
