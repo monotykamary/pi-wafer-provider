@@ -187,6 +187,29 @@
     }
   },
   {
+    "id": "Nemotron-3.5-Lightning",
+    "name": "Nemotron-3.5-Lightning",
+    "reasoning": true,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.05,
+      "output": 0.2,
+      "cacheRead": 0.03,
+      "cacheWrite": 0
+    },
+    "contextWindow": 262144,
+    "maxTokens": 262144,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
     "id": "Qwen3.8-27B",
     "name": "Qwen3.8-27B",
     "reasoning": true,
