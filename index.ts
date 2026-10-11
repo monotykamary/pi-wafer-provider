@@ -7,6 +7,9 @@
  * Model resolution strategy: Stale-While-Revalidate
  *   1. Serve stale immediately: disk cache → embedded models.json (zero-latency)
  *   2. Revalidate in background: live API /models → merge with embedded → cache → hot-swap
+ *      Quiet startup sync (sync-policy.ts): only with an API key, only when the
+ *      disk cache is older than the TTL (1h, PI_PROVIDER_SYNC_TTL_MS) or the key
+ *      changed, and only one pi process at a time (lock file next to the cache).
  *   3. patch.json + custom-models.json applied on top of whichever source won
  *   
  * Merge order: [live|cache|embedded] → apply patch.json → merge custom-models.json
@@ -38,6 +41,7 @@ import patchData from "./patch.json" with { type: "json" };
 import deprecatedData from "./deprecated-models.json" with { type: "json" };
 import fs from "fs";
 import path from "path";
+import { acquireModelSync, cacheChangedSinceLoad, markCacheLoaded, writeFileAtomic } from "./sync-policy";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -249,7 +253,8 @@ function loadCachedModels(providerId: string): JsonModel[] | null {
 function cacheModels(providerId: string, models: JsonModel[]): void {
   try {
     fs.mkdirSync(CACHE_DIR, { recursive: true });
-    fs.writeFileSync(getCachePath(providerId), JSON.stringify(models, null, 2) + "\n");
+    // Atomic (tmp + rename): other pi processes may be reading the cache right now.
+    writeFileAtomic(getCachePath(providerId), JSON.stringify(models, null, 2) + "\n");
   } catch {
     // Cache write failure is non-fatal
   }
@@ -322,6 +327,7 @@ function withDeprecated(models: JsonModel[]): JsonModel[] {
 }
 
 function loadStaleModels(providerId: string, embeddedModels: JsonModel[]): JsonModel[] {
+  markCacheLoaded(getCachePath(providerId)); // stat before read: lets session_start spot newer caches
   const cached = loadCachedModels(providerId);
   if (!cached || cached.length === 0) return embeddedModels;
 
@@ -335,13 +341,27 @@ function loadStaleModels(providerId: string, embeddedModels: JsonModel[]): JsonM
   return cached;
 }
 
-async function revalidateModels(providerId: string, apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal): Promise<JsonModel[] | null> {
-  if (!apiKey) return null;
-  const liveModels = await fetchLiveModels(apiKey, signal);
-  if (!liveModels || liveModels.length === 0) return null;
-  const merged = mergeWithEmbedded(liveModels, embeddedModels);
-  cacheModels(providerId, merged);
-  return merged;
+/**
+ * Background revalidation, gated by the quiet startup sync policy
+ * (sync-policy.ts): no key → no fetch; fresh cache (TTL) → no fetch; another
+ * process already fetching → no fetch. When skipped, a cache that another
+ * process refreshed since we loaded it is adopted from disk instead.
+ * `force` bypasses the TTL (e.g. after /login); it is still single-flight.
+ */
+async function revalidateModels(providerId: string, apiKey: string | undefined, embeddedModels: JsonModel[], signal?: AbortSignal, force = false): Promise<JsonModel[] | null> {
+  const cachePath = getCachePath(providerId);
+  const lease = acquireModelSync({ cachePath, apiKey, force });
+  if (!lease) return cacheChangedSinceLoad(cachePath) ? loadStaleModels(providerId, embeddedModels) : null;
+  let merged: JsonModel[] | null = null;
+  try {
+    const liveModels = apiKey ? await fetchLiveModels(apiKey, signal) : null;
+    if (!liveModels || liveModels.length === 0) return null;
+    merged = mergeWithEmbedded(liveModels, embeddedModels);
+    cacheModels(providerId, merged);
+    return merged;
+  } finally {
+    lease.release(merged ? "fetched" : signal?.aborted ? "aborted" : "failed");
+  }
 }
 
 // ─── Per-Provider State ───────────────────────────────────────────────────────
@@ -402,12 +422,15 @@ function registerWaferProvider(
     models: applyZdrHeaders(staleModels),
   });
 
+  // Fire-and-forget: never await network here — startup must not block on the
+  // provider API. Nothing is awaited and every rejection is swallowed.
   pi.on("session_start", async (_event, ctx) => {
     state.revalidateAbort?.abort();
     state.revalidateAbort = new AbortController();
     const signal = state.revalidateAbort.signal;
-    resolveApiKey(state, providerId, ctx.modelRegistry, config).then(() => {
-      revalidateModels(providerId, state.cachedApiKey, embeddedModels, signal).then((freshBase) => {
+    void resolveApiKey(state, providerId, ctx.modelRegistry, config)
+      .then(() => revalidateModels(providerId, state.cachedApiKey, embeddedModels, signal))
+      .then((freshBase) => {
         if (freshBase && !signal.aborted) {
           pi.registerProvider(providerId, {
             baseUrl: BASE_URL,
@@ -418,8 +441,8 @@ function registerWaferProvider(
             ),
           });
         }
-      });
-    });
+      })
+      .catch(() => { /* keep serving the stale catalog */ });
   });
 
   pi.on("session_shutdown", () => {

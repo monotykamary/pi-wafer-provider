@@ -20,6 +20,7 @@ _Serverless inference with free DeepSeek V4 models for [pi](https://github.com/e
 - **Cost Tracking** with per-model pricing for budget management
 - **Reasoning Models** support for advanced reasoning capabilities
 - **Vision Support** for Qwen3.5 (image + text input)
+- **Quiet live model sync** — Models refresh from the Wafer API in the background, at most hourly and by one pi process at a time ([details](#model-sync))
 
 ## Provider
 
@@ -119,6 +120,7 @@ API keys can be configured in multiple ways (resolved in this order):
 |----------|----------|-------------|
 | `WAFER_SERVERLESS_API_KEY` | `wafer-serverless` | Primary API key |
 | `WAFER_API_KEY` | `wafer-serverless` | Legacy fallback (used if `WAFER_SERVERLESS_API_KEY` is unset) |
+| `PI_PROVIDER_SYNC_TTL_MS` | `wafer-serverless` | Model sync freshness window in ms (default `3600000`; `0` = revalidate every session start) |
 
 ## Configuration
 
@@ -131,6 +133,20 @@ Add to your pi configuration for automatic loading:
   ]
 }
 ```
+
+## Model sync
+
+Startup never waits on the network. pi starts with the cached catalog (`~/.pi/agent/cache/wafer-serverless-models.json`,
+falling back to the bundled `models.json`) and revalidates against `/v1/models` in the background — only when:
+
+- a Wafer API key is configured (no key, no request),
+- the cache is older than 1 hour, missing, or was fetched with a different API key, and
+- no other pi process is already refreshing it (a `wafer-serverless-models.lock` file next to the cache).
+
+So `/new`, `/reload`, `pi -p` and fan-out child agents share one cache instead of each calling the API; a
+session that skips the fetch still picks up a cache another process refreshed. A failed refresh is retried after
+5 minutes at the earliest. `PI_PROVIDER_SYNC_TTL_MS` changes the window (`0` revalidates on every session start).
+Only a hash fingerprint of the key is stored (`wafer-serverless-models.sync.json`), never the key itself.
 
 ## License
 

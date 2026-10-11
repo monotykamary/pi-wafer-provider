@@ -7,7 +7,8 @@
   "scripts": {
     "clean": "echo 'nothing to clean'",
     "build": "echo 'nothing to build'",
-    "check": "tsc --noEmit && node scripts/test-pi-compat.mjs",
+    "check": "tsc --noEmit && vitest run && node scripts/test-pi-compat.mjs",
+    "test": "vitest run",
     "update-models": "node scripts/update-models.js",
     "test:pi": "node scripts/test-pi-compat.mjs",
     "typecheck": "tsc --noEmit"
@@ -36,7 +37,8 @@
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "1.1.0",
     "typescript": "6.0.3",
-    "@types/node": "^25.9.1"
+    "@types/node": "^25.9.1",
+    "vitest": "4.1.7"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
