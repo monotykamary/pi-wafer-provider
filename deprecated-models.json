@@ -22,5 +22,30 @@
       "supportsReasoningEffort": true
     },
     "deprecatedAt": "2026-10-16T04:18:49.906Z"
+  },
+  "MiniMax-M3.1-Flash": {
+    "id": "MiniMax-M3.1-Flash",
+    "name": "MiniMax-M3.1-Flash",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.15,
+      "output": 0.6,
+      "cacheRead": 0.02,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    },
+    "deprecatedAt": "2026-10-29T05:33:04.562Z"
   }
 }
