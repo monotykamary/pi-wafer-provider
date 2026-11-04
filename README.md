@@ -81,11 +81,11 @@ pi
 | DeepSeek-V4-Flash-0731-Fast | Text | 1M | 1M | $0.13 | $0.23 | $0.03 |
 | DeepSeek-V4-Pro | Text | 1M | 1M | $0.28 | $3.96 | $0.04 |
 | DeepSeek-V4.1-Flash | Text + Image | 1M | 1M | $0.19 | $0.65 | $0.01 |
-| DeepSeek-V4.1-Flash-1017 | Text + Image | 1M | 1M | $0.13 | $0.50 | — |
+| DeepSeek-V4.1-Flash-1017 | Text + Image | 1M | 1M | $0.13 | $0.50 | $0.01 |
 | GLM-5.2 | Text | 1M | 1M | $0.19 | $4.40 | $0.18 |
-| GLM-5.3 | Text | 1M | 1M | $0.30 | $3.00 | $0.18 |
+| GLM-5.3 | Text | 1M | 1M | $0.20 | $1.80 | $0.18 |
 | GLM-5.3-Flash | Text + Image | 1M | 1M | $0.05 | $0.20 | $0.03 |
-| Kimi-K3 | Text + Image | 1M | 16K | $2.00 | $15.00 | $0.25 |
+| Kimi-K3 | Text + Image | 1M | 16K | $0.60 | $15.00 | $0.20 |
 | Qwen3.8-27B | Text + Image | 262K | 262K | $0.06 | $2.30 | $0.05 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
