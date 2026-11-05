@@ -211,6 +211,54 @@
     }
   },
   {
+    "id": "Kimi-K3.1-Pro",
+    "name": "Kimi-K3.1-Pro",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.2,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
+    "id": "Kimi-K3.1-Pro-US",
+    "name": "Kimi-K3.1-Pro (US)",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.2,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1048576,
+    "maxTokens": 1048576,
+    "compat": {
+      "maxTokensField": "max_completion_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsZdr": true,
+      "supportsReasoningEffort": true
+    }
+  },
+  {
     "id": "Qwen3.8-27B",
     "name": "Qwen3.8-27B",
     "reasoning": true,

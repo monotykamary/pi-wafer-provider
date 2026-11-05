@@ -86,6 +86,8 @@ pi
 | GLM-5.3 | Text | 1M | 1M | $0.20 | $1.80 | $0.18 |
 | GLM-5.3-Flash | Text + Image | 1M | 1M | $0.05 | $0.20 | $0.03 |
 | Kimi-K3 | Text + Image | 1M | 16K | $0.60 | $15.00 | $0.20 |
+| Kimi-K3.1-Pro | Text + Image | 1M | 1M | $2.00 | $10.00 | $0.20 |
+| Kimi-K3.1-Pro (US) | Text + Image | 1M | 1M | $2.00 | $10.00 | $0.20 |
 | Qwen3.8-27B | Text + Image | 262K | 262K | $0.06 | $2.30 | $0.05 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
