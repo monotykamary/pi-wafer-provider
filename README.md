@@ -88,6 +88,7 @@ pi
 | Kimi-K3 | Text + Image | 1M | 16K | $0.60 | $15.00 | $0.20 |
 | Kimi-K3.1-Pro | Text + Image | 1M | 1M | $2.00 | $10.00 | $0.20 |
 | Kimi-K3.1-Pro (US) | Text + Image | 1M | 1M | $2.00 | $10.00 | $0.20 |
+| MiniMax-M3.1-Flash | Text | 1M | 1M | $0.15 | $0.60 | $0.02 |
 | Qwen3.8-27B | Text + Image | 262K | 262K | $0.06 | $2.30 | $0.05 |
 
 *Costs are per million tokens. Prices based on official provider pricing.*
