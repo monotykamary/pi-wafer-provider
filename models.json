@@ -263,7 +263,8 @@
     "name": "MiniMax-M3.1-Flash",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.15,
